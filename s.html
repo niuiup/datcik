@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VirtualSensor AI | Оптический IoT-Датчик</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #151b2b;
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --accent: #ff4b4b;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        
+        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        header { padding: 60px 0; text-align: center; background: linear-gradient(180deg, #101827 0%, var(--bg-color) 100%); border-bottom: 1px solid #1f2937; }
+        header h1 { font-size: 3rem; background: -webkit-linear-gradient(var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; }
+        header p { font-size: 1.2rem; color: var(--text-muted); max-width: 800px; margin: 0 auto; }
+
+        .section-title { text-align: center; font-size: 2rem; margin: 60px 0 40px; color: #fff; }
+
+        /* Grid Cards */
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 60px; }
+        .card { background: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid #1f2937; transition: transform 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 20px rgba(0, 210, 255, 0.1); }
+        .card h3 { color: var(--primary); margin-bottom: 15px; font-size: 1.3rem; }
+
+        /* Interactive Demo Section */
+        .demo-box { background: var(--card-bg); padding: 40px; border-radius: 16px; border: 1px solid #1f2937; display: flex; flex-wrap: wrap; gap: 40px; align-items: center; justify-content: space-between; margin-bottom: 80px; }
+        
+        /* Analog Gauge CSS */
+        .gauge-container { width: 200px; height: 200px; background: conic-gradient(from 180deg at 50% 50%, #ffffff 0deg, #f0f0f0 180deg, transparent 180deg); border-radius: 50%; position: relative; border: 10px solid #2d3748; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 20px; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+        .gauge-center { width: 20px; height: 20px; background: #1a202c; border-radius: 50%; z-index: 10; position: absolute; bottom: 10px; }
+        .needle { width: 4px; height: 90px; background: var(--accent); position: absolute; bottom: 20px; transform-origin: bottom center; transform: rotate(-90deg); transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 4px 4px 0 0; }
+        .gauge-labels { position: absolute; width: 100%; height: 100%; }
+        .gauge-labels span { position: absolute; font-weight: bold; color: #1a202c; font-size: 12px; }
+        
+        .demo-controls { flex: 1; min-width: 300px; }
+        .slider-container { margin-top: 20px; }
+        input[type="range"] { width: 100%; margin: 15px 0; accent-color: var(--primary); }
+        
+        /* Digital Output */
+        .digital-panel { background: #0b0f19; padding: 20px; border-radius: 8px; border: 1px solid #2d3748; font-family: monospace; }
+        .digital-value { font-size: 2.5rem; color: #00ff00; text-shadow: 0 0 10px rgba(0,255,0,0.3); margin: 10px 0; }
+        .log-line { color: var(--text-muted); font-size: 0.9rem; margin-top: 5px; }
+
+        /* Architecture Section */
+        .architecture { background: #0f1523; padding: 40px; border-radius: 12px; font-family: monospace; border-left: 4px solid var(--primary); margin-bottom: 60px; }
+        .arch-step { margin-bottom: 15px; }
+        .arch-highlight { color: var(--primary); font-weight: bold; }
+
+        .btn { display: inline-block; padding: 15px 30px; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: opacity 0.3s; margin-top: 20px; border: none; cursor: pointer;}
+        .btn:hover { opacity: 0.9; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>VirtualSensor AI</h1>
+            <p>Неинвазивная цифровизация: превращаем обычные камеры видеонаблюдения (CCTV) в умные IoT-датчики для промышленности с помощью мультимодального ИИ.</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">Какую проблему мы решаем?</h2>
+        <div class="features">
+            <div class="card">
+                <h3>❌ Классическая оцифровка</h3>
+                <p>Требует остановки трубопровода/оборудования, врезки дорогих цифровых датчиков, прокладки взрывозащищенных кабелей и перепрограммирования ПЛК. <strong>Долго, дорого, требует простоев.</strong></p>
+            </div>
+            <div class="card">
+                <h3>✅ Подход VirtualSensor</h3>
+                <p>ИИ подключается к существующим RTSP-видеопотокам с камер наблюдения. Он «смотрит» на старые стрелочные приборы и визуально считывает показания, передавая их в SCADA. <strong>Без остановки производства, дешево.</strong></p>
+            </div>
+            <div class="card">
+                <h3>⚠️ Раннее обнаружение (HSE)</h3>
+                <p>Датчики давления реагируют, когда авария уже произошла. Наш ИИ видит микро-утечки жидкости или появление задымления задолго до того, как изменятся физические параметры в трубе.</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">Интерактивная демонстрация работы</h2>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Покрутите ползунок, чтобы сымитировать изменение давления на реальном объекте.</p>
+        
+        <div class="demo-box">
+            <!-- Виртуальный аналоговый манометр -->
+            <div style="text-align: center;">
+                <p style="margin-bottom: 10px; color: var(--text-muted);">Камера №4: Манометр насоса</p>
+                <div class="gauge-container">
+                    <div class="gauge-labels">
+                        <span style="bottom: 10px; left: 10px;">0</span>
+                        <span style="top: 10px; left: 50%; transform: translateX(-50%);">5</span>
+                        <span style="bottom: 10px; right: 10px;">10</span>
+                    </div>
+                    <div class="needle" id="gaugeNeedle"></div>
+                    <div class="gauge-center"></div>
+                </div>
+            </div>
+
+            <!-- Управление -->
+            <div class="demo-controls">
+                <div class="slider-container">
+                    <label for="pressureSlider">Физическое давление (Имитация реального мира): <span id="sliderValue">0</span> Бар</label>
+                    <input type="range" id="pressureSlider" min="0" max="10" step="0.1" value="0">
+                </div>
+
+                <!-- Вывод данных ИИ -->
+                <div class="digital-panel">
+                    <div style="font-size: 0.8rem; color: #888;">SCADA Вывод (Оцифрованные данные)</div>
+                    <div class="digital-value" id="digitalReadout">0.0 Бар</div>
+                    <div class="log-line" id="aiStatus">> Ожидание изменений кадра...</div>
+                    <div class="log-line" id="leakStatus">> Утечек в кадре не обнаружено</div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Как это работает технически (Архитектура)</h2>
+        <div class="architecture">
+            <div class="arch-step"><span class="arch-highlight">[1. Источник]:</span> Система подключается к существующим камерам по протоколу RTSP. Захват кадра (1 FPS).</div>
+            <div class="arch-step"><span class="arch-highlight">[2. Edge Фильтрация]:</span> Локальная легковесная модель (OpenCV/YOLO) обрезает лишний фон и проверяет: "Изменилась ли картинка?". Если нет — экономим ресурсы.</div>
+            <div class="arch-step"><span class="arch-highlight">[3. Vision Agent (MCP)]:</span> Если стрелка сдвинулась, кадр отправляется в Мультимодальную LLM (через Model Context Protocol). Агент получает команду: <i>"Считай показания с манометра на изображении"</i>.</div>
+            <div class="arch-step"><span class="arch-highlight">[4. Интеграция SCADA]:</span> Агент возвращает число (JSON). Через инструмент MCP-MQTT/OPC-UA данные записываются в базу завода (Historian). Для диспетчера это выглядит как обычный цифровой тег.</div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 100px;">
+            <button class="btn" onclick="alert('Для запуска пилотного проекта мы запрашиваем 1-2 тестовых видеопотока с ваших камер на 7 дней.')">Запросить пилот (PoC)</button>
+        </div>
+    </div>
+
+    <script>
+        // Логика интерактивного симулятора
+        const slider = document.getElementById('pressureSlider');
+        const sliderValue = document.getElementById('sliderValue');
+        const needle = document.getElementById('gaugeNeedle');
+        const digitalReadout = document.getElementById('digitalReadout');
+        const aiStatus = document.getElementById('aiStatus');
+        const leakStatus = document.getElementById('leakStatus');
+
+        let timeoutId;
+
+        slider.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value).toFixed(1);
+            sliderValue.innerText = val;
+            
+            // Поворот стрелки манометра (-90deg это 0, +90deg это 10)
+            const rotation = (val / 10) * 180 - 90;
+            needle.style.transform = `rotate(${rotation}deg)`;
+
+            // Имитация работы ИИ (Анализ кадра)
+            digitalReadout.style.color = "#888";
+            aiStatus.innerHTML = "<span style='color: #ffeb3b;'>> MCP Agent: Захват кадра и анализ Vision-моделью...</span>";
+            
+            clearTimeout(timeoutId);
+            
+            // Имитация задержки обработки нейросетью (600 мс)
+            timeoutId = setTimeout(() => {
+                digitalReadout.innerText = val + " Бар";
+                digitalReadout.style.color = val > 8 ? "#ff4b4b" : "#00ff00"; // Красный, если высокое давление
+                
+                aiStatus.innerHTML = "<span style='color: #4caf50;'>> Успешно: Данные отправлены в OPC UA / MQTT</span>";
+
+                // Пасхалка: имитация аварии при давлении выше 9
+                if(val > 9) {
+                    leakStatus.innerHTML = "<span style='color: #ff4b4b;'>> ⚠️ АЛАРМ: Вероятность разрыва! Обнаружено распыление жидкости.</span>";
+                } else {
+                    leakStatus.innerHTML = "> Утечек в кадре не обнаружено";
+                }
+            }, 600);
+        });
+    </script>
+</body>
+</html>
